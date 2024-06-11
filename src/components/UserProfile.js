@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import DOMPurify from "dompurify";
 axios.defaults.withCredentials = true;
@@ -12,7 +12,8 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
   const [profileImageError, setProfileImageError] = useState("");
   const [changeAbout, setChangeAbout] = useState(false);
   const [successUpdateMessage, setSuccessMessage] = useState("");
-
+  const [toDelete, setToDelete] = useState("");
+  const confirmDeletionDialog = useRef(null);
   const navigate = useNavigate();
 
   async function getUserData() {
@@ -21,7 +22,9 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
         "http://localhost:5000/api/blogs/profile"
       );
       if (response.status === 200) {
-        setUserProfile(response.data.user);
+        const profile = response.data.user[0];
+        profile.posts = response.data.posts;
+        setUserProfile(profile);
         return response;
       }
     } catch (error) {
@@ -56,23 +59,52 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
         "http://localhost:5000/api/blogs/profile?update=true&image=" +
         DOMPurify.sanitize(image) +
         "&age=" +
-        DOMPurify.sanitize(age) +
+        DOMPurify.sanitize(new Date(age).toISOString()) +
         "&about=" +
         DOMPurify.sanitize(about),
     };
     try {
       const response = await axios(options);
-      if (response.status == 200) {
+      if (response.status === 200) {
         setSuccessMessage(
           "Profile Updated you'll see the changes next time you login"
         );
         setAboutUser("");
         setUserProfileImage("");
         setUserAge("");
+        window.location.reload();
         return;
       }
     } catch (error) {
       console.log(error);
+      return error;
+    }
+  };
+  const handlePostDelete = async () => {
+    const findpost = userProfile.posts.findIndex(
+      (posts) => posts._id === toDelete
+    );
+    try {
+      const response = await axios.get(
+        "http://localhost:5000/api/blogs/profile?delete=true&&id=" + toDelete
+      );
+      if (response.status === 200) {
+        if (findpost >= 0) {
+          setUserProfile((prev) => {
+            const newArray = [...prev.posts];
+            newArray.splice(findpost, 1);
+            return {
+              ...prev,
+              posts: newArray,
+            };
+          });
+        }
+        setToDelete("DELETED");
+      }
+    } catch (error) {
+      console.log(error);
+      setClientLogged(false);
+      navigate("/sign-in");
       return error;
     }
   };
@@ -88,6 +120,39 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
   if (userProfile) {
     return (
       <div id="user-profile">
+        <dialog ref={confirmDeletionDialog} style={{ borderRadius: "20px" }}>
+          <div style={{ background: "white" }}>
+            <h3>
+              {toDelete === "DELETED"
+                ? "Post has been deleted"
+                : "This action is irreversible, do you want to proceed?"}
+            </h3>
+            {toDelete && toDelete !== "DELETED" && (
+              <button
+                onClick={() => {
+                  confirmDeletionDialog.current.close();
+                  setToDelete("");
+                }}
+              >
+                Cancel
+              </button>
+            )}
+            {toDelete === "DELETED" ? (
+              <button
+                onClick={() => {
+                  setToDelete("");
+                  confirmDeletionDialog.current.close();
+                }}
+              >
+                Close
+              </button>
+            ) : (
+              <button style={{ background: "red" }} onClick={handlePostDelete}>
+                Delete
+              </button>
+            )}
+          </div>
+        </dialog>
         <h1>About me </h1>
         <p>{successUpdateMessage || ""}</p>
         {profileImage && !profileImageError ? (
@@ -101,6 +166,7 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
             <img
               className="profile-image"
               src={profileImage}
+              alt="profile"
               onError={(e) => {
                 e.target.src = "";
                 setProfileImageError(true);
@@ -146,26 +212,30 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
         </h2>
         <h3>{email}</h3>
         {age ? (
-          <h3>Age: {age}</h3>
+          <h3>
+            Age:{" "}
+            {Math.floor(
+              (new Date().getTime() - new Date(age).getTime()) /
+                (1000 * 60 * 60 * 24 * 365.25)
+            )}
+          </h3>
         ) : (
           <label>
             <p>Age:</p>
             <input
-              max={120}
+              type="date"
+              value={userAge || new Date()}
               onChange={(e) => {
-                if (e.target.value.length >= 3) {
-                  return (e.target.value = userAge);
-                }
                 setUserAge(e.target.value);
               }}
-              type="number"
               name="userage"
+              style={{ width: "10rem" }}
             />
           </label>
         )}
         {about && !changeAbout ? (
           <div
-            style={{ display: "flex", flexDirection: "column", width: "40%" }}
+            style={{ display: "flex", flexDirection: "column", width: "80%" }}
           >
             <h3 style={{ textAlign: "center" }}>About me:</h3>
             <p style={{ fontSize: "18px", margin: "auto" }}>{about}</p>
@@ -192,7 +262,7 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
           </label>
         )}
         <h1>My Posts</h1>
-        <div id="profile-pósts-container">
+        <div id="profile-posts-container">
           {posts.length === 0 ? (
             <p style={{ gridColumn: "span 3" }}>This looks to empty...</p>
           ) : (
@@ -211,6 +281,16 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
                   <Link onClick={(e) => setEditBlog(post)} to={"/create/edit"}>
                     <button className="edit-blog-btn">Edit</button>
                   </Link>
+                  <button
+                    className="edit-blog-btn"
+                    style={{ backgroundColor: "red", margin: "auto" }}
+                    onClick={() => {
+                      confirmDeletionDialog.current.showModal();
+                      setToDelete(post._id);
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               );
             })

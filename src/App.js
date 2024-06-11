@@ -46,7 +46,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/create"
-            element={<Create clientLogged={clientLogged} />}
+            element={
+              <Create clientLogged={clientLogged} setOpenBlog={setOpenBlog} />
+            }
           />
           <Route
             path="/create/edit"

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { stringify } from "himalaya";
 import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import xIcon from "../social-icons/x-icon.svg";
-import instagramIcon from "../social-icons/instagram-icon.svg";
 import facebookIcon from "../social-icons/facebook-icon.svg";
 
 import axios from "axios";
@@ -11,12 +10,14 @@ const BlogPage = ({ openBlog, clientLogged }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [messageSaved, setMessageSaved] = useState(false);
+  const [similarBlogs, setSimilarBlogs] = useState("");
   const [user, setUser] = useState("");
   const [creatorData, setCreatorData] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  async function getBlogById(id) {
+
+  async function getBlogById(id, getSimilar) {
     const options = {
       method: "POST",
       url: "http://localhost:5000/api/blogs/blog/" + id,
@@ -26,7 +27,13 @@ const BlogPage = ({ openBlog, clientLogged }) => {
     try {
       const response = await axios(options);
       if (response.status === 200) {
+        if (getSimilar) {
+          setSimilarBlogs(response.data.similarBlog);
+          setIsLoading(false);
+          return response;
+        }
         setBlog(response.data.blog);
+        setSimilarBlogs(response.data.similarBlog);
         setIsLoading(false);
         return response;
       } else {
@@ -62,9 +69,9 @@ const BlogPage = ({ openBlog, clientLogged }) => {
   useEffect(() => {
     if (!openBlog && !blog) {
       getBlogById(id).catch((error) => console.log(error));
-    } else {
+    } else if (openBlog) {
       setBlog([openBlog]);
-      setIsLoading(false);
+      getBlogById(id, true).catch((error) => console.log(error));
     }
     if (!clientLogged) {
       setUser("");
@@ -102,29 +109,42 @@ const BlogPage = ({ openBlog, clientLogged }) => {
     return <div style={{ backgroundColor: "black" }}></div>;
   }
 
-  const { title, blog_content, date, messages, creatorID } = blog[0];
+  const { title, blog_content, date, messages, creatorID, _id } = blog[0];
   if (creatorID && !creatorData) {
     getCreatorData(creatorID);
   }
 
   const { name, lastname, about, profileImage } = creatorData;
   const parsedBlogContent = stringify(blog_content);
+
   return (
     <div id="blog-page">
-      {/* <div id="similar-content-sidebar">
-        <div>
-          <h1>{title}</h1>
-          <p>{description}</p>
-        </div>
-        <div>
-          <h1>{title}</h1>
-          <p>{description}</p>
-        </div>
-        <div>
-          <h1>{title}</h1>
-          <p>{description}</p>
-        </div>
-      </div> */}
+      <div style={{ maxWidth: "70%", marginLeft: "15%" }}>
+        <h1 style={{ color: "white", marginBottom: "0" }}>{title}</h1>
+      </div>
+      <div id="similar-content-sidebar">
+        <h3 style={{ marginLeft: "10px" }}>Similar Blogs</h3>
+        {similarBlogs.length > 0 &&
+          similarBlogs.map((blog) => {
+            if (blog._id === _id) {
+              return;
+            }
+            return (
+              <div className="similar-blog-item-container">
+                <h4>
+                  {blog.title.length > 41
+                    ? blog.title.slice(0, 40) + "..."
+                    : blog.title}
+                </h4>
+                <p>
+                  {blog.description.length > 90
+                    ? blog.description.slice(0, 80) + "..."
+                    : blog.description}
+                </p>
+              </div>
+            );
+          })}
+      </div>
       <article>
         <div dangerouslySetInnerHTML={{ __html: parsedBlogContent }}></div>
       </article>
@@ -134,15 +154,12 @@ const BlogPage = ({ openBlog, clientLogged }) => {
         </p>
         <h2>About the Disciple</h2>
         <span className="blog-page-creator-profile">
-          <img src={profileImage}></img>
+          <img src={profileImage} alt="profile"></img>
           <p style={{ fontSize: "18px", fontWeight: "bolder" }}>
             {name}, {lastname}
           </p>
         </span>
-        <p>
-          {about ||
-            "Now, the client will receive the token in the response cookie and can use it for subsequent requests to stay authenticated. Make sure to handle this token securely on the client-side and include it in the headers of future requests."}{" "}
-        </p>
+        <p>{about || " "}</p>
         <div className="social-media-links">
           <p style={{ fontSize: "20px", fontWeight: "bolder" }}>
             Share this post!

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BlogCategories from "./BlogCategories";
 import axios from "axios";
-import processTextarea from "../utils/markupParser";
+
 const Discover = ({ setOpenBlog }) => {
   const [blogsData, setBlogsData] = useState("");
   const [isLoading, setIsLoading] = useState(true);

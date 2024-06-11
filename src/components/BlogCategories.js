@@ -62,29 +62,11 @@ const BlogCategories = ({ setOpenBlog }) => {
     return navigate("/blogs/category/" + "all");
   };
 
-  // if (blogsByCategory) {
-  //   const blogs = blogsByCategory.map((blog, index) => {
-  //     const { _id, title, description, date, creatorName } = { ...blog };
-  //     return (
-  //       <Link
-  //         className="link-to-blog"
-  //         key={index + 400}
-  //         to={"/blogs/" + _id}
-  //         onClick={() => setOpenBlog(blog)}
-  //       >
-  //         <div className="blog-container">
-  //           <h2>{title}</h2>
-  //           <p>{description}</p>
-  //         </div>
-  //       </Link>
-  //     );
-  //   });
-
-  //   return <div>{blogs}</div>;
-  // }
-
   return (
-    <section id={!category ? "blog-categories" : "blogs-categories-page"}>
+    <section
+      id={!category ? "blog-categories" : "blogs-categories-page"}
+      style={{ display: "flex" }}
+    >
       <div className="categories-links-container">
         <div onClick={() => handleClick("technology")}>
           <h2>Technology</h2>

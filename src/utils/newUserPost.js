@@ -1,7 +1,6 @@
 import axios from "axios";
 
 async function newUserPost(email, name, lastname, password) {
-  console.log(email, name, lastname, password);
   const options = {
     method: "POST",
     url: "http://localhost:5000/api/blogs/newuser",

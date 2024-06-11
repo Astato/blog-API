@@ -1,5 +1,4 @@
-import { useEffect, useReducer, useRef, useState, Component } from "react";
-import helpIcon from "../icons/help._icon.svg";
+import { useEffect, useReducer, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import newBlogReducer from "../utils/newBlogReducer";
 import Preview from "./Preview";
@@ -15,11 +14,11 @@ const defaultState = {
   categories: "",
 };
 
-const Create = ({ clientLogged, editBlog }) => {
+const Create = ({ clientLogged, editBlog, setOpenBlog }) => {
   const [textareaInput, setTextAreaInput] = useState("");
   const [showPreview, setShowPreview] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [description, setDescription] = useState("");
   const [state, dispatch] = useReducer(newBlogReducer, defaultState);
   const [errorMessage, setErrorMessage] = useState("");
   const dialogRef = useRef(null);
@@ -28,6 +27,35 @@ const Create = ({ clientLogged, editBlog }) => {
   const handlePreview = () => {
     setShowPreview((prev) => !prev);
   };
+
+  const handleSaveDraftToLocalStorage = (e) => {
+    const form = formRef.current;
+    localStorage.setItem(
+      "savedPost",
+      JSON.stringify({
+        title: form.title.value,
+        description: form.description.value,
+        blog_content: textareaInput,
+      })
+    );
+    e.target.textContent = "Draft saved!";
+    e.target.style.filter = " hue-rotate(100deg)";
+    setTimeout(() => {
+      e.target.textContent = "Save Draft";
+      e.target.style.filter = "invert(0)";
+    }, 1000);
+    return;
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("savedPost")) {
+      const savedPost = JSON.parse(localStorage.getItem("savedPost"));
+      const form = formRef.current;
+      form.title.value = savedPost.title;
+      form.description.value = savedPost.description;
+      setTextAreaInput(savedPost.blog_content);
+    }
+  }, []);
 
   const handleSubmit = () => {
     const user = clientLogged._id;
@@ -96,29 +124,30 @@ const Create = ({ clientLogged, editBlog }) => {
           </label>
         </div>
         <div id="blog-create">
-          <label>
-            Title:
+          <div className="blog-desc">
+            <p>Title:</p>
             <textarea
-              style={{ marginLeft: "6.6rem" }}
               type="text"
               name="title"
               id="title"
               rows={4}
+              style={{ height: "50px", margin: "auto 0", fontWeight: "bolder" }}
               cols={33}
-              onKeyDown={(e) => setDescription(e.target.value)}
+              maxLength={70}
               defaultValue={editBlog ? editBlog.title : ""}
             ></textarea>
-          </label>
-          <label>
-            Summary:
+          </div>
+          <div className="blog-desc">
+            <p>Summary:</p>
             <textarea
               type="text"
               name="description"
               rows={4}
               cols={33}
+              maxLength={300}
               defaultValue={editBlog ? editBlog.description : ""}
             ></textarea>
-          </label>
+          </div>
           <div id="editor-container">
             <label
               style={{
@@ -134,7 +163,7 @@ const Create = ({ clientLogged, editBlog }) => {
               data={
                 editBlog
                   ? stringify(editBlog.blog_content)
-                  : null || "<p>Start Creating!</p>"
+                  : textareaInput || "<p>Start Creating!</p>"
               }
               config={{ mediaEmbed: { previewsInData: true } }}
               onChange={(event, editor) => {
@@ -148,7 +177,8 @@ const Create = ({ clientLogged, editBlog }) => {
           <div style={{ margin: "auto" }}>
             <dialog ref={dialogRef}>
               <p>
-                <strong>Caution:</strong> you are about to delete everything!
+                <strong>Caution:</strong> You are about to delete all unsaved
+                changes!
               </p>
               <button
                 type="button"
@@ -183,7 +213,14 @@ const Create = ({ clientLogged, editBlog }) => {
             >
               Reset
             </button>
-            <button style={{ backgroundColor: "#02bda4" }}>Save Draft</button>
+            <button
+              id="save-draft"
+              style={{ backgroundColor: "#02bda4" }}
+              onClick={handleSaveDraftToLocalStorage}
+            >
+              Save Draft
+              <p>The post is stored in your browser (just the last one)</p>
+            </button>
           </div>
         ) : (
           <Link
@@ -199,7 +236,9 @@ const Create = ({ clientLogged, editBlog }) => {
           textareaInput={textareaInput}
           setShowPreview={setShowPreview}
           setErrorMessage={setErrorMessage}
+          isEdit={Boolean(editBlog)}
           state={state}
+          setOpenBlog={setOpenBlog}
         />
       ) : (
         <></>

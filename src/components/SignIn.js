@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import mailchecker from "mailchecker";
-import facebookLogo from "../icons/facebook-icon.jpeg";
 import googleLogo from "../icons/google-icon.png";
 import userAuthPost from "../utils/userAuthPost";
 import newUserPost from "../utils/newUserPost";
