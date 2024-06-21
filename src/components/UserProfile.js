@@ -148,7 +148,7 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
         </dialog>
         <h1>About me </h1>
         <p>{successUpdateMessage || ""}</p>
-        {profileImage ? (
+        {profileImage && !profileImageError ? (
           <div
             style={{
               display: "flex",
@@ -167,18 +167,14 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
             />
             <button
               type="button"
-              onClick={() => {
-                profileImageError === "change"
-                  ? setProfileImageError("")
-                  : setProfileImageError("change");
-              }}
+              onClick={() => setProfileImageError("change")}
               style={{
                 padding: ".5rem",
                 fontSize: "15px",
                 margin: "1rem auto",
               }}
             >
-              {!profileImageError ? "Edit" : "Cancel"}
+              Change
             </button>
           </div>
         ) : profileImageError === true ? (
@@ -202,6 +198,17 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
               name="profileimage"
               onChange={(e) => setUserProfileImage(e.target.value)}
             />
+            <button
+              type="button"
+              onClick={() => setProfileImageError("")}
+              style={{
+                padding: ".5rem",
+                fontSize: "15px",
+                margin: "1rem auto",
+              }}
+            >
+              Cancel
+            </button>
           </label>
         )}
         <h2>
@@ -237,14 +244,14 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
             <h3 style={{ textAlign: "center" }}>About me:</h3>
             <p style={{ fontSize: "18px", margin: "auto" }}>{about}</p>
             <button
-              onClick={() => setChangeAbout(!changeAbout)}
+              onClick={() => setChangeAbout(true)}
               style={{
                 padding: ".5rem",
                 fontSize: "15px",
                 margin: "1rem auto",
               }}
             >
-              {!changeAbout ? "Edit" : "Cancel"}
+              Edit
             </button>
           </div>
         ) : (
@@ -255,7 +262,20 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
               rows={5}
               onChange={(e) => setAboutUser(e.target.value)}
               name="aboutuser"
+              defaultValue={about || ""}
             ></textarea>
+            {about && (
+              <button
+                onClick={() => setChangeAbout(false)}
+                style={{
+                  padding: ".5rem",
+                  fontSize: "15px",
+                  margin: "1rem auto",
+                }}
+              >
+                Cancel
+              </button>
+            )}
           </label>
         )}
         <h1>My Posts</h1>
