@@ -148,7 +148,7 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
         </dialog>
         <h1>About me </h1>
         <p>{successUpdateMessage || ""}</p>
-        {profileImage && !profileImageError ? (
+        {profileImage ? (
           <div
             style={{
               display: "flex",
@@ -167,14 +167,18 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
             />
             <button
               type="button"
-              onClick={() => setProfileImageError("change")}
+              onClick={() => {
+                profileImageError === "change"
+                  ? setProfileImageError("")
+                  : setProfileImageError("change");
+              }}
               style={{
                 padding: ".5rem",
                 fontSize: "15px",
                 margin: "1rem auto",
               }}
             >
-              Change
+              {!profileImageError ? "Edit" : "Cancel"}
             </button>
           </div>
         ) : profileImageError === true ? (
@@ -233,14 +237,14 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
             <h3 style={{ textAlign: "center" }}>About me:</h3>
             <p style={{ fontSize: "18px", margin: "auto" }}>{about}</p>
             <button
-              onClick={() => setChangeAbout(true)}
+              onClick={() => setChangeAbout(!changeAbout)}
               style={{
                 padding: ".5rem",
                 fontSize: "15px",
                 margin: "1rem auto",
               }}
             >
-              Change
+              {!changeAbout ? "Edit" : "Cancel"}
             </button>
           </div>
         ) : (
