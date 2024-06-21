@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { BASEURL } from "../App";
 import { useNavigate, Link, useParams } from "react-router-dom";
+
 const BlogCategories = ({ setOpenBlog }) => {
   const [blogsByCategory, setBlogsByCategory] = useState("");
   const [loadItems, setLoadItems] = useState(1);
@@ -12,10 +14,7 @@ const BlogCategories = ({ setOpenBlog }) => {
     const options = {
       method: "GET",
       url:
-        "http://localhost:5000/api/blogs?category=" +
-        category +
-        "&loadItems=" +
-        loadItems,
+        BASEURL + "/api/blogs?category=" + category + "&loadItems=" + loadItems,
     };
 
     try {
@@ -23,12 +22,12 @@ const BlogCategories = ({ setOpenBlog }) => {
       if (category === "all") {
         response = await axios({
           method: "GET",
-          url: "http://localhost:5000/api/blogs?loadItems=" + loadItems,
+          url: BASEURL + "/api/blogs?loadItems=" + loadItems,
         });
       } else {
         response = await axios(options);
       }
-      if (response.status == 200 && category !== "all") {
+      if (response.status === 200 && category !== "all") {
         setDataLength(response.data.items[0].count);
         return setBlogsByCategory((prev) => [...prev, ...response.data.blogs]);
       } else {
@@ -59,7 +58,7 @@ const BlogCategories = ({ setOpenBlog }) => {
     return navigate("/blogs/category/" + arg);
   };
   const handleSeeAll = () => {
-    return navigate("/blogs/category/" + "all");
+    return navigate("/blogs/category/all");
   };
 
   return (

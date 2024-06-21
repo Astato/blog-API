@@ -11,6 +11,8 @@ import UserProfile from "./components/UserProfile";
 import axios from "axios";
 import BlogCategories from "./components/BlogCategories";
 
+export const BASEURL = "https://hubapi.fly.dev";
+
 function App() {
   const [openBlog, setOpenBlog] = useState(null);
   const [clientLogged, setClientLogged] = useState(false);
@@ -18,9 +20,7 @@ function App() {
 
   const isClientLogged = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/blogs/logged"
-      );
+      const response = await axios.get(`${BASEURL}/api/blogs/logged`);
       if (response.status === 200) {
         setClientLogged(response.data.logged);
         return response;

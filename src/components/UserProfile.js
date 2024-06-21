@@ -2,8 +2,8 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import DOMPurify from "dompurify";
+import { BASEURL } from "../App";
 axios.defaults.withCredentials = true;
-
 const UserProfile = ({ setClientLogged, setEditBlog }) => {
   const [userProfile, setUserProfile] = useState("");
   const [userAge, setUserAge] = useState("");
@@ -18,9 +18,7 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
 
   async function getUserData() {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/blogs/profile"
-      );
+      const response = await axios.get(BASEURL + "/api/blogs/profile");
       if (response.status === 200) {
         const profile = response.data.user[0];
         profile.posts = response.data.posts;
@@ -37,9 +35,7 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
 
   const handleLogout = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/blogs/logout"
-      );
+      const response = await axios.get(BASEURL + "/api/blogs/logout");
       if (response.status === 200) {
         setUserProfile(response.data.user);
         setClientLogged(false);
@@ -56,7 +52,7 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
     const options = {
       method: "GET",
       url:
-        "http://localhost:5000/api/blogs/profile?update=true&image=" +
+        BASEURL * "/api/blogs/profile?update=true&image=" +
         DOMPurify.sanitize(image) +
         "&age=" +
         DOMPurify.sanitize(new Date(age).toISOString()) +
@@ -86,7 +82,7 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
     );
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/blogs/profile?delete=true&&id=" + toDelete
+        BASEURL + "/api/blogs/profile?delete=true&&id=" + toDelete
       );
       if (response.status === 200) {
         if (findpost >= 0) {

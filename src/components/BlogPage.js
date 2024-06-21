@@ -3,7 +3,7 @@ import { stringify } from "himalaya";
 import { useParams, useNavigate, Link, useLocation } from "react-router-dom";
 import xIcon from "../social-icons/x-icon.svg";
 import facebookIcon from "../social-icons/facebook-icon.svg";
-
+import { BASEURL } from "../App";
 import axios from "axios";
 const BlogPage = ({ openBlog, clientLogged }) => {
   const [blog, setBlog] = useState(null);
@@ -20,7 +20,7 @@ const BlogPage = ({ openBlog, clientLogged }) => {
   async function getBlogById(id, getSimilar) {
     const options = {
       method: "POST",
-      url: "http://localhost:5000/api/blogs/blog/" + id,
+      url: BASEURL + "/api/blogs/blog/" + id,
       withCredentials: false,
       header: { "Content-Type": "application/x-www-form-urlencoded" },
     };
@@ -48,7 +48,7 @@ const BlogPage = ({ openBlog, clientLogged }) => {
   async function getCreatorData(id) {
     const options = {
       method: "POST",
-      url: "http://localhost:5000/api/blogs/creatorinfo",
+      url: BASEURL + "/api/blogs/creatorinfo",
       data: "creatorID=" + id,
       withCredentials: false,
       header: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -87,7 +87,7 @@ const BlogPage = ({ openBlog, clientLogged }) => {
     const commenterID = clientLogged._id;
     const options = {
       method: "POST",
-      url: "http://localhost:5000/api/blogs/saveblogmessage",
+      url: BASEURL + "/api/blogs/saveblogmessage",
       data: { message, blogId, date, commenterName, commenterID, blogTitle },
       headers: { "Content-Type": "application/json" },
     };
@@ -167,8 +167,9 @@ const BlogPage = ({ openBlog, clientLogged }) => {
           <div style={{ width: "fit-content" }}>
             <a
               target="_blank"
+              rel="noreferrer"
               href={
-                "https://twitter.com/intent/tweet?text=Check%20this%20awesome%20blog%20from%20DISC!&url=http://localhost:3000" +
+                "https://twitter.com/intent/tweet?text=Check%20this%20awesome%20blog%20from%20DISC!&url=https://blog-wapp.netlify.app" +
                 location.pathname
               }
             >
@@ -178,8 +179,9 @@ const BlogPage = ({ openBlog, clientLogged }) => {
               <img src={instagramIcon}></img>
             </a> */}
             <a
+              rel="noreferrer"
               href={
-                "https://www.facebook.com/sharer/sharer.php?u=http://localhost:3000" +
+                "https://www.facebook.com/sharer/sharer.php?u=https://blog-wapp.netlify.app" +
                 location.pathname
               }
               target="_blank"

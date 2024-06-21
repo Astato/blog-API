@@ -184,10 +184,8 @@ const Create = ({ clientLogged, editBlog, setOpenBlog }) => {
                 type="button"
                 className="reset-button"
                 onClick={() => {
-                  {
-                    setTextAreaInput("");
-                    dialogRef.current.close();
-                  }
+                  setTextAreaInput("");
+                  dialogRef.current.close();
                 }}
               >
                 Accept
@@ -261,128 +259,128 @@ const Create = ({ clientLogged, editBlog, setOpenBlog }) => {
 
 export default Create;
 
-{
-  /* <div id="tooltip">
-                <p>
-                  <img src={helpIcon} alt="Help" />
-                  {"\t"}Instructions
-                </p>
+// {
+//   /* <div id="tooltip">
+//                 <p>
+//                   <img src={helpIcon} alt="Help" />
+//                   {"\t"}Instructions
+//                 </p>
 
-                <ul id="tooltip-text">
-                  <li
-                    className="instructions-caution"
-                    style={{ margin: 0, textAlign: "left" }}
-                  >
-                    This is a custom markup parser. The objective is to provide
-                    text editing and add simplicity.
-                  </li>
-                  <li>
-                    Click the elements on the side to add your elements. ¡¡ If
-                    you are feeling adventurous you can can write them your self
-                    !!
-                  </li>
-                  <li>
-                    You can add a text element if you want to edit the font size
-                    or color, for a black default text, just write it outside
-                    the other elements.
-                  </li>
-                  <li>
-                    You can change the color of the text by chaging the value in
-                    color. e.g: *T color=red or color=rgb(255,40,30)*.
-                  </li>
-                  <li>
-                    You can change the font size by changing the value in size,
-                    e.g: size=54.
-                  </li>
-                  <li>
-                    To write a list place a ">" before the text. Tip: you can
-                    add links to your list, e.g: >*K color=black, size=14,
-                    link=https://www.google.com*Link to google*K*
-                  </li>
+//                 <ul id="tooltip-text">
+//                   <li
+//                     className="instructions-caution"
+//                     style={{ margin: 0, textAlign: "left" }}
+//                   >
+//                     This is a custom markup parser. The objective is to provide
+//                     text editing and add simplicity.
+//                   </li>
+//                   <li>
+//                     Click the elements on the side to add your elements. ¡¡ If
+//                     you are feeling adventurous you can can write them your self
+//                     !!
+//                   </li>
+//                   <li>
+//                     You can add a text element if you want to edit the font size
+//                     or color, for a black default text, just write it outside
+//                     the other elements.
+//                   </li>
+//                   <li>
+//                     You can change the color of the text by chaging the value in
+//                     color. e.g: *T color=red or color=rgb(255,40,30)*.
+//                   </li>
+//                   <li>
+//                     You can change the font size by changing the value in size,
+//                     e.g: size=54.
+//                   </li>
+//                   <li>
+//                     To write a list place a ">" before the text. Tip: you can
+//                     add links to your list, e.g: >*K color=black, size=14,
+//                     link=https://www.google.com*Link to google*K*
+//                   </li>
 
-                  <li>
-                    To add a link just place the link in the element. Just make
-                    suure the link contains the https://. e.g:
-                    https://www.facebook.com
-                  </li>
-                  <li>
-                    To add an image place the link to the image, Make sure that
-                    the link is to the actual image or it won't be displayed.
-                  </li>
-                  <li className="instructions-caution">
-                    ** If your elements are not being displayed correctly or are
-                    improperly displayed, please check for mistakes and ensure
-                    that you are following the provided templates.
-                  </li>
-                </ul>
-              </div> */
-}
-{
-  /* <textarea
-                name="content"
-                id="textarea"
-                onChange={(e) => setTextAreaInput(e.target.value)}
-                value={textareaInput}
-              ></textarea> */
-}
+//                   <li>
+//                     To add a link just place the link in the element. Just make
+//                     suure the link contains the https://. e.g:
+//                     https://www.facebook.com
+//                   </li>
+//                   <li>
+//                     To add an image place the link to the image, Make sure that
+//                     the link is to the actual image or it won't be displayed.
+//                   </li>
+//                   <li className="instructions-caution">
+//                     ** If your elements are not being displayed correctly or are
+//                     improperly displayed, please check for mistakes and ensure
+//                     that you are following the provided templates.
+//                   </li>
+//                 </ul>
+//               </div> */
+// }
+// {
+//   /* <textarea
+//                 name="content"
+//                 id="textarea"
+//                 onChange={(e) => setTextAreaInput(e.target.value)}
+//                 value={textareaInput}
+//               ></textarea> */
+// }
 
-{
-  /* <ul id="add-elements-container">
-              <p>Add Elements</p>
-              <li onClick={() => addElements("title")}>Title</li>
-              <li onClick={() => addElements("subtitle")}>Subtitle</li>
-              <li onClick={() => addElements("text")}>Text</li>
-              <li onClick={() => addElements("numbered_list")}>
-                Numbered List
-              </li>
-              <li onClick={() => addElements("list")}>List</li>
-              <li onClick={() => addElements("indent")}>Indent</li>
-              <li onClick={() => addElements("image")}>Image</li>
-              <li onClick={() => addElements("link")}>Link</li>
-            </ul> */
-}
+// {
+//   /* <ul id="add-elements-container">
+//               <p>Add Elements</p>
+//               <li onClick={() => addElements("title")}>Title</li>
+//               <li onClick={() => addElements("subtitle")}>Subtitle</li>
+//               <li onClick={() => addElements("text")}>Text</li>
+//               <li onClick={() => addElements("numbered_list")}>
+//                 Numbered List
+//               </li>
+//               <li onClick={() => addElements("list")}>List</li>
+//               <li onClick={() => addElements("indent")}>Indent</li>
+//               <li onClick={() => addElements("image")}>Image</li>
+//               <li onClick={() => addElements("link")}>Link</li>
+//             </ul> */
+// }
 
-// const addElements = (ele) => {
-//   switch (ele) {
-//     case "title":
-//       setTextAreaInput(
-//         (prev) => prev + "*T color=black, size=54*Your title*T*"
-//       );
-//       return;
-//     case "subtitle":
-//       setTextAreaInput(
-//         (prev) => prev + "*S color=black, size=38*Your subtitle*S*"
-//       );
-//       return;
-//     case "numbered_list":
-//       setTextAreaInput(
-//         (prev) => prev + "*N color=black, size=18* \n>item 1 \n>item2 \n*N*"
-//       );
-//       return;
-//     case "list":
-//       setTextAreaInput(
-//         (prev) => prev + "*L color=black, size=18* \n>item 1 \n>item2 \n*L*"
-//       );
-//       return;
-//     case "indent":
-//       setTextAreaInput(
-//         (prev) => prev + "*i color=black, size=18*Your text*i*"
-//       );
-//       return;
-//     case "text":
-//       setTextAreaInput(
-//         (prev) => prev + "*t color=black, size=18*Your text*t*"
-//       );
-//       return;
-//     case "link":
-//       setTextAreaInput(
-//         (prev) =>
-//           prev +
-//           "*K color=blue, size=18, link=https://www.google.com*Your Link*K*"
-//       );
-//       return;
-//     case "image":
-//       setTextAreaInput((prev) => prev + "  \n*I size=500*Your Image Link*I*");
-//       return;
-//   }
-// };
+// // const addElements = (ele) => {
+// //   switch (ele) {
+// //     case "title":
+// //       setTextAreaInput(
+// //         (prev) => prev + "*T color=black, size=54*Your title*T*"
+// //       );
+// //       return;
+// //     case "subtitle":
+// //       setTextAreaInput(
+// //         (prev) => prev + "*S color=black, size=38*Your subtitle*S*"
+// //       );
+// //       return;
+// //     case "numbered_list":
+// //       setTextAreaInput(
+// //         (prev) => prev + "*N color=black, size=18* \n>item 1 \n>item2 \n*N*"
+// //       );
+// //       return;
+// //     case "list":
+// //       setTextAreaInput(
+// //         (prev) => prev + "*L color=black, size=18* \n>item 1 \n>item2 \n*L*"
+// //       );
+// //       return;
+// //     case "indent":
+// //       setTextAreaInput(
+// //         (prev) => prev + "*i color=black, size=18*Your text*i*"
+// //       );
+// //       return;
+// //     case "text":
+// //       setTextAreaInput(
+// //         (prev) => prev + "*t color=black, size=18*Your text*t*"
+// //       );
+// //       return;
+// //     case "link":
+// //       setTextAreaInput(
+// //         (prev) =>
+// //           prev +
+// //           "*K color=blue, size=18, link=https://www.google.com*Your Link*K*"
+// //       );
+// //       return;
+// //     case "image":
+// //       setTextAreaInput((prev) => prev + "  \n*I size=500*Your Image Link*I*");
+// //       return;
+// //   }
+// // };

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { debounce } from "lodash";
+
 const Navbar = ({ clientLogged }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [expanded, setExpanded] = useState(false);

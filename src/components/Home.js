@@ -1,5 +1,4 @@
 import BlogCategories from "./BlogCategories";
-
 const Home = () => {
   return (
     <div id="home">

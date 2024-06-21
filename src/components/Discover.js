@@ -2,16 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BlogCategories from "./BlogCategories";
 import axios from "axios";
-
+import { BASEURL } from "../App";
 const Discover = ({ setOpenBlog }) => {
   const [blogsData, setBlogsData] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   const getBlogs = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/blogs?loadItems=1"
-      );
+      const response = await axios.get(BASEURL + "/api/blogs?loadItems=1");
       setBlogsData(response.data.allBlogs);
       setIsLoading(false);
       return response.status;

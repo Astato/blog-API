@@ -1,9 +1,9 @@
 import axios from "axios";
-
+import { BASEURL } from "../App";
 async function newUserPost(email, name, lastname, password) {
   const options = {
     method: "POST",
-    url: "http://localhost:5000/api/blogs/newuser",
+    url: BASEURL + "/api/blogs/newuser",
     data: {
       email,
       name,

@@ -5,6 +5,7 @@ import googleLogo from "../icons/google-icon.png";
 import userAuthPost from "../utils/userAuthPost";
 import newUserPost from "../utils/newUserPost";
 import DOMPurify from "dompurify";
+import { BASEURL } from "../App";
 const SignIn = ({ setClientLogged }) => {
   const [signup, setSignUp] = useState(false);
   const [emailInput, setEmailInput] = useState("");
@@ -145,7 +146,7 @@ const SignIn = ({ setClientLogged }) => {
           </div>
           {/* <p style={{ textAlign: "center", margin: "auto" }}>Or</p> */}
           <div id="thirdparty-auth">
-            <a href="http://localhost:5000/api/oauth2/redirect/google">
+            <a href={BASEURL + "/api/oauth2/redirect/google"}>
               <button type="button" className="thirdparty-login-btn">
                 <img
                   src={googleLogo}

@@ -1,9 +1,9 @@
 import axios from "axios";
-
+import { BASEURL } from "../App";
 async function userAuthPost(email, password) {
   const options = {
     method: "Post",
-    url: "http://localhost:5000/api/blogs/authenticate",
+    url: BASEURL + "/api/blogs/authenticate",
     data: { email: email, password: password },
     Headers: { "Content-Type": "json/application" },
   };
