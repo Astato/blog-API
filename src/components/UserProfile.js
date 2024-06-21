@@ -49,12 +49,12 @@ const UserProfile = ({ setClientLogged, setEditBlog }) => {
 
   const handleSaveProfile = async (image, age, about) => {
     setChangeAbout(false);
-    const query = `image=${DOMPurify.sanitize(image)}${
+    const query = `image=${encodeURIComponent(DOMPurify.sanitize(image))}${
       !age ? "" : "&age=" + DOMPurify.sanitize(new Date(age).toISOString())
-    }&about=${DOMPurify.sanitize(about)}`;
+    }&about=${encodeURIComponent(DOMPurify.sanitize(about))}`;
     const options = {
       method: "GET",
-      url: BASEURL * "/api/blogs/profile?update=true&" + query,
+      url: BASEURL + "/api/blogs/profile?update=true&" + query,
     };
     try {
       const response = await axios(options);
