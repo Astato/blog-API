@@ -146,7 +146,12 @@ const SignIn = ({ setClientLogged }) => {
           </div>
           {/* <p style={{ textAlign: "center", margin: "auto" }}>Or</p> */}
           <div id="thirdparty-auth">
-            <a href={BASEURL + "/api/oauth2/redirect/google"}>
+            <a
+              href={BASEURL + "/api/oauth2/redirect/google"}
+              target={
+                window.location.search.match("iframe") ? "_blank" : "_self"
+              }
+            >
               <button type="button" className="thirdparty-login-btn">
                 <img
                   src={googleLogo}
