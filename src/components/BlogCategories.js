@@ -64,7 +64,7 @@ const BlogCategories = ({ setOpenBlog }) => {
   return (
     <section
       id={!category ? "blog-categories" : "blogs-categories-page"}
-      style={{ display: "flex" }}
+      style={{ display: "flex", flexDirection: "column" }}
     >
       <div className="categories-links-container">
         <div onClick={() => handleClick("technology")}>

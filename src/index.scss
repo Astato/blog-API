@@ -932,6 +932,13 @@ button,
       gap: 1rem;
     }
   }
+
+  .categories-links-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 90vw;
+    margin: auto;
+  }
 }
 
 @media (max-width: 680px) {
@@ -1039,6 +1046,12 @@ button,
       padding: 0 1rem;
       gap: 1rem;
     }
+  }
+  #category-blogs-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 90%;
+    margin: auto;
   }
 }
 
