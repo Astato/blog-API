@@ -132,7 +132,7 @@ const BlogPage = ({ openBlog, clientLogged }) => {
             return (
               <div
                 className="similar-blog-item-container"
-                onClick={() => window.location.href("/blogs/" + blog._id)}
+                onClick={() => (window.location.href = "/blogs/" + blog._id)}
               >
                 <h4>
                   {blog.title.length > 41
