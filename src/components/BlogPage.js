@@ -130,7 +130,10 @@ const BlogPage = ({ openBlog, clientLogged }) => {
               return;
             }
             return (
-              <div className="similar-blog-item-container">
+              <div
+                className="similar-blog-item-container"
+                onClick={() => navigate("/blogs/" + blog._id)}
+              >
                 <h4>
                   {blog.title.length > 41
                     ? blog.title.slice(0, 40) + "..."
